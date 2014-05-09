@@ -1,3 +1,6 @@
+
+include_recipe 'yum-epel'
+
 #
 # Setup variables
 #
