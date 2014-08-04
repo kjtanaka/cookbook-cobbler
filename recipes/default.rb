@@ -18,40 +18,29 @@
 # limitations under the License.
 #
 
+# Install EPEL repository
 include_recipe 'yum-epel'
+# Disable iptables
+include_recipe 'iptables::disabled'
+# Disable SELinux
+include_recipe 'selinux::disabled'
 
-#
 # Setup variables
-#
 server = node['cobbler']['server']
 next_server = node['cobbler']['next_server']
 password = node['cobbler']['password']
 module_authentication = node['cobbler']['module_authentication']
 module_authorization = node['cobbler']['module_authorization']
 
-#
 # Install packages
-#
-packages = %w[ cobbler
-               cobbler-web
-               pykickstart
-               cman
-               wget ]
+package "cobbler"
+package "cobbler-web"
+package "pykickstart"
+package "cman"
+package "wget"
 
-packages.each do |package|
-  package "#{package}" do
-    action :install
-  end
-end
-
-#
 # Enable Services
-#
-enable_services = %w[
-              cobblerd
-              httpd
-              xinetd
-              ]
+enable_services = %w[cobblerd httpd xinetd]
 
 enable_services.each do |enable_service|
   service "#{enable_service}" do
@@ -59,16 +48,7 @@ enable_services.each do |enable_service|
   end
 end
 
-#
-# Disable Services
-#
-service "iptables" do
-  action [:stop, :disable]
-end
-
-#
 # Update /etc/xinetd.d/rsync
-#
 cookbook_file "/etc/xinetd.d/rsync" do
   source "rsync"
   mode 0644
@@ -78,25 +58,19 @@ cookbook_file "/etc/xinetd.d/rsync" do
   notifies :restart, "service[xinetd]", :immediately
 end
 
-#
 # Cobbler Sync
-#
 execute "cobbler_sync" do
   command "cobbler sync"
   action :nothing
 end
 
-#
 # Cobbler Get Loaders
-#
 execute "cobbler_get-loaders" do
   command "cobbler get-loaders"
   action :nothing
 end
 
-#
 # Update /etc/cobbler/settings
-#
 template "/etc/cobbler/settings" do
   source "settings.erb"
   mode 0644
@@ -113,9 +87,7 @@ template "/etc/cobbler/settings" do
   notifies :run, "execute[cobbler_get-loaders]", :immediately
 end
 
-#
 # Update /etc/cobbler/modules.conf
-#
 template "/etc/cobbler/modules.conf" do
   source "modules.conf.erb"
   mode 0644

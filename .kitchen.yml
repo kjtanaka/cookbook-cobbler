@@ -18,7 +18,11 @@ suites:
   - name: default
     run_list:
       - recipe[cobbler::default]
-    attributes: {}
+    attributes: {
+      cobbler: {
+        server: "192.168.33.31"
+      }
+    }
     driver_config:
       network:
         - ["private_network", {ip: "192.168.33.31"}]
