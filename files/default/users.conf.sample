@@ -25,13 +25,6 @@
 [admins]
 admin = ""
 cobbler = ""
-test1 = ""
-astreib = ""
-ktanaka = ""
 
 [users]
-astreib = ""
-fuwang = ""
-gvonlasz = ""
-hengchen = ""
-ktanaka = ""
+user1 = ""
