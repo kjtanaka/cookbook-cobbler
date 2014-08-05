@@ -20,7 +20,9 @@ suites:
       - recipe[cobbler::default]
     attributes: {
       cobbler: {
-        server: "192.168.33.31"
+        server: "192.168.33.31",
+        next_server: "192.168.33.31",
+        password: "$1$I2I1r0Td$ZoN2LELpbUNkgj80xHWNV1"
       }
     }
     driver_config:

@@ -38,6 +38,7 @@ package "cobbler-web"
 package "pykickstart"
 package "cman"
 package "wget"
+package "debmirror"
 
 # Enable Services
 enable_services = %w[cobblerd httpd xinetd]
@@ -100,5 +101,13 @@ template "/etc/cobbler/modules.conf" do
   )
   notifies :restart, "service[cobblerd]", :immediately
   notifies :restart, "service[httpd]", :immediately
+end
+
+# Update /etc/debmirror.conf
+cookbook_file "/etc/debmirror.conf" do
+  owner "root"
+  group "root"
+  mode "0644"
+  action :create
 end
 
