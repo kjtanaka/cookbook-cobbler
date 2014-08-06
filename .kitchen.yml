@@ -17,6 +17,7 @@ platforms:
 suites:
   - name: default
     run_list:
+      - recipe[dhcp::server]
       - recipe[cobbler::default]
     attributes: {
       cobbler: {
@@ -28,3 +29,11 @@ suites:
     driver_config:
       network:
         - ["private_network", {ip: "192.168.33.31"}]
+  - name: client
+    run_list:
+      - recipe[dhcp::client]
+      - recipe[cobbler::client]
+    attributes: {}
+    driver_config:
+      network:
+        - ["private_network", {ip: "192.168.33.32"}]
